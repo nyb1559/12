@@ -1,0 +1,481 @@
+/* style.css */
+@import url('https://fonts.googleapis.com/css2?family=VT323&family=Noto+Sans+KR:wght@300;500;700&display=swap');
+
+:root {
+    --bg-color: #020202;
+    --text-main: #b0b0b0;
+    --text-highlight: #f0f0f0;
+    --accent-green: #2a9d8f;
+    --accent-red: #d00000;
+    --border-color: #333;
+    --font-code: 'VT323', monospace;
+    --font-ui: 'Noto Sans KR', sans-serif;
+}
+
+/* ★ 스크롤바 커스텀 (분위기 맞춤) ★ */
+::-webkit-scrollbar {
+    width: 10px;
+}
+::-webkit-scrollbar-track {
+    background: #000; 
+    border-left: 1px solid #222;
+}
+::-webkit-scrollbar-thumb {
+    background: #333; 
+    border: 1px solid #555;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-green);
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    font-family: var(--font-code);
+    height: 100vh;
+    margin: 0;
+    overflow: hidden; /* 전체 페이지 스크롤은 막고 */
+}
+
+/* CRT 효과 */
+.crt-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%);
+    background-size: 100% 4px;
+    pointer-events: none;
+    z-index: 100;
+}
+
+/* 화면 공통 */
+.screen-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    padding: 20px 0; /* 위아래 여백 */
+    box-sizing: border-box;
+}
+
+.screen {
+    display: none;
+    width: 90%;
+    max-width: 900px;
+    height: 100%; /* 부모 높이 꽉 채움 */
+    max-height: 95vh; /* 화면보다 약간 작게 */
+    flex-direction: column;
+    padding: 20px;
+    border: 2px solid var(--border-color);
+    background: #080808;
+    position: relative;
+    
+    /* ★ 핵심: 여기서 스크롤 가능하게 변경 ★ */
+    overflow-y: auto; 
+    box-sizing: border-box;
+}
+
+.screen.active { display: flex; }
+
+/* 1️⃣ 시작 화면 */
+#screen-start {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border: none;
+    background: transparent;
+    overflow: hidden; /* 시작 화면은 스크롤 불필요 */
+}
+.title-text {
+    font-size: 5rem;
+    color: var(--text-highlight);
+    text-shadow: 2px 2px var(--accent-red);
+    margin: 0;
+}
+.subtitle-text { font-size: 1.5rem; color: var(--accent-green); margin-top: 10px; }
+.blink-text { animation: blink 1s infinite; margin-top: 50px; color: #555; }
+.btn-invisible {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    opacity: 0; cursor: pointer;
+}
+
+/* 2️⃣ 생성 화면 */
+#screen-creation h2 { 
+    text-align: center; 
+    border-bottom: 1px solid var(--border-color); 
+    padding-bottom: 10px; 
+    margin-top: 0;
+}
+.header-log { 
+    display: flex; 
+    justify-content: space-between; 
+    font-size: 0.9rem; 
+    color: #555; 
+    margin-bottom: 10px; 
+}
+
+.cards-container { 
+    display: flex; 
+    gap: 20px; 
+    /* flex: 1;  <-- 제거: 내용물 크기에 맞춤 */
+    margin-bottom: 20px; 
+}
+.char-setup-card {
+    flex: 1;
+    border: 1px solid var(--border-color);
+    background: #0c0c0c;
+    display: flex;
+    flex-direction: column;
+}
+.card-header {
+    background: var(--border-color);
+    color: #000;
+    padding: 5px 10px;
+    font-weight: bold;
+    text-align: center;
+}
+.setup-body {
+    padding: 15px;
+    display: flex;
+    gap: 15px;
+    border-bottom: 1px dashed var(--border-color);
+}
+
+/* 이미지 업로드 박스 */
+.img-upload-slot {
+    width: 100px;
+    height: 120px;
+    border: 2px dashed #444;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    position: relative;
+    transition: 0.3s;
+    overflow: hidden;
+}
+.img-upload-slot:hover { border-color: var(--accent-green); color: var(--accent-green); }
+.placeholder-icon { font-size: 0.9rem; text-align: center; line-height: 1.2; }
+.hidden-file-input {
+    position: absolute; width: 100%; height: 100%; opacity: 0; cursor: pointer;
+}
+.img-preview {
+    display: none; width: 100%; height: 100%; object-fit: cover;
+    filter: contrast(1.1) saturate(0.8);
+}
+.img-upload-slot.has-image .placeholder-icon { display: none; }
+.img-upload-slot.has-image .img-preview { display: block; }
+
+.input-area { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 10px; }
+.input-group { display: flex; justify-content: space-between; align-items: center; }
+.input-group label { font-size: 1rem; color: #777; }
+.input-group input, .input-group select {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #555;
+    color: var(--text-highlight);
+    width: 60%;
+    font-family: var(--font-code);
+    font-size: 1.1rem;
+    text-align: right;
+}
+
+.stat-alloc { padding: 15px; font-size: 1.1rem; }
+.stat-title { margin-bottom: 10px; font-size: 1rem; color: #888; }
+.stat-remain { color: var(--accent-green); }
+.stat-row { display: flex; justify-content: space-between; margin-bottom: 5px; align-items: center; }
+.stat-luck .luck-chip {
+    width: 60%; text-align: right; color: #888; letter-spacing: 1px;
+    padding: 2px 0; border-bottom: 1px solid #555;
+}
+.stat-total input.stat-total-input{
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #555;
+  color: var(--text-highlight);
+  width: 60%;
+  font-family: var(--font-code);
+  font-size: 1.1rem;
+  text-align: right;
+  outline: none;
+}
+
+/* 관계 설정 UI (하단 배치용 수정) */
+.relation-pick {
+    border: 1px solid var(--border-color);
+    background: #0b0b0b;
+    padding: 20px;
+    margin: 0 0 20px 0;
+    /* 하단을 묵직하게 차지하도록 */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.relation-title {
+    color: var(--text-highlight);
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+    border-bottom: 1px dashed #333;
+    padding-bottom: 8px;
+    text-align: center;
+}
+.relation-grid, .master-grid {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+.rel-btn, .master-btn {
+    background: #111;
+    border: 1px solid #444;
+    color: #999;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-family: var(--font-ui);
+    font-size: 1rem;
+    transition: 0.2s;
+    flex: 1; /* 버튼들이 너비를 나눠 갖도록 */
+    max-width: 120px;
+    text-align: center;
+}
+.rel-btn:hover, .master-btn:hover { border-color: var(--accent-green); color: var(--accent-green); }
+.rel-btn.active {
+    border-color: var(--accent-green); color: var(--text-highlight);
+    box-shadow: 0 0 10px rgba(42,157,143,0.12);
+    background: #0f1f1d;
+}
+.master-pick {
+    margin-top: 15px; padding-top: 15px; border-top: 1px dashed #333; display: none;
+}
+.master-title { color: #777; text-align: center; margin-bottom: 10px; font-size: 0.95rem; }
+.master-btn.active {
+    border-color: var(--accent-red); color: var(--text-highlight);
+    box-shadow: 0 0 10px rgba(208,0,0,0.10);
+}
+.relation-desc {
+    margin: 15px 0 0; color: #666; text-align: center;
+    font-size: 0.9rem; font-family: var(--font-ui);
+}
+
+.agreement-section { text-align: center; margin-bottom: 20px; color: #666; font-size: 0.9rem; }
+.btn-submit {
+    background: var(--border-color);
+    color: var(--text-highlight);
+    border: none;
+    padding: 20px;
+    font-size: 1.3rem;
+    font-family: var(--font-code);
+    cursor: pointer;
+    transition: 0.3s;
+    width: 100%;
+    margin-bottom: 20px; /* 스크롤 끝 여유 */
+}
+.btn-submit:hover { background: var(--accent-green); color: #000; }
+
+/* 3️⃣ 메인 게임 화면 */
+/* 게임 화면에서는 내부 요소들이 넘치지 않게 Flex 조정 */
+#screen-game {
+    overflow-y: hidden; /* 게임 화면은 고정된 게 예쁨 */
+}
+
+/* 만약 게임 화면 내용이 너무 많으면 여기도 auto로 */
+/* .console-log-container 가 flex: 1 이라 알아서 조절됨 */
+
+.floor-hud {
+    display: flex; justify-content: space-between; align-items: center;
+    border: 1px solid var(--border-color); background: #050505;
+    padding: 8px 12px; margin-bottom: 10px; font-family: var(--font-code);
+    flex-shrink: 0;
+}
+.floor-left, .floor-right { display: flex; align-items: baseline; gap: 10px; }
+.floor-label, .mode-label { color: #666; font-size: 0.9rem; letter-spacing: 1px; }
+.floor-value { color: var(--text-highlight); font-size: 1.6rem; text-shadow: 0 0 8px rgba(42,157,143,0.25); }
+.floor-sub { color: #777; font-size: 0.95rem; border-left: 1px dashed #333; padding-left: 10px; }
+.mode-value { color: var(--accent-green); font-weight: bold; letter-spacing: 1px; }
+
+.game-status-panel { 
+    display: flex; 
+    height: 32%; 
+    gap: 15px; 
+    margin-bottom: 15px; 
+    flex-shrink: 0; 
+}
+.char-card.dead { filter: grayscale(1); opacity: 0.75; }
+.img-display-area.no-signal{
+  background-image: none !important;
+  filter: none !important;
+  color: #666 !important;
+  display:flex; align-items:center; justify-content:center;
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+}
+
+.char-card {
+    flex: 1; border: 1px solid var(--border-color); padding: 10px;
+    display: flex; background: #0a0a0a; overflow: hidden;
+}
+.portrait-box {
+    width: 90px; height: 100%; background: #000; border-right: 1px solid var(--border-color);
+    margin-right: 10px; display: flex; justify-content: center; align-items: center;
+    position: relative; overflow: hidden; flex-shrink: 0;
+}
+.img-display-area {
+    width: 100%;     
+    height: 100%;    
+    display: flex;     
+    justify-content: center;
+    align-items: center;
+    color: #333;
+    font-size: 0.8rem;
+    
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.overlay-damage {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background: red; opacity: 0; mix-blend-mode: multiply; pointer-events: none;
+}
+#ending-overlay{
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(0,0,0,0.78);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+#ending-overlay.show{ display:flex; }
+
+.ending-panel{
+  width: min(680px, 92vw);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 14px;
+  background: rgba(10,10,10,0.55);
+  box-shadow: 0 18px 60px rgba(0,0,0,0.6);
+  padding: 18px 18px 16px;
+}
+.ending-title{
+  font-weight: 800;
+  font-size: 22px;
+  margin-bottom: 10px;
+  letter-spacing: 0.2px;
+}
+.ending-body{
+  white-space: pre-wrap;
+  line-height: 1.55;
+  opacity: 0.92;
+  margin-bottom: 14px;
+}
+.log-entry.dialogue { opacity: 0.92; letter-spacing: 0.2px; }
+.log-entry.system { opacity: 1; }
+.log-entry.event { opacity: 1; }
+
+.ending-actions{
+  display:flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+.ending-actions button{
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.16);
+  background: rgba(255,255,255,0.06);
+  color: #fff;
+  cursor: pointer;
+}
+.ending-actions button:hover{
+  background: rgba(255,255,255,0.10);
+}
+
+.char-info { 
+    flex: 1; font-size: 0.9rem; display: flex; flex-direction: column; gap: 4px; overflow-y: auto; 
+    padding-right: 5px; /* 스크롤바 공간 */
+}
+.name-tag { color: var(--text-highlight); border-bottom: 1px solid #333; padding-bottom: 2px; }
+.bar-group { display: flex; align-items: center; gap: 5px; font-size: 0.8rem; color: #666; }
+.bar-group .label { width: 30px; }
+.hp-bar-wrap, .san-bar-wrap { flex: 1; height: 6px; background: #222; }
+.hp-bar { height: 100%; background: var(--accent-red); }
+.san-bar { height: 100%; background: #444; }
+
+.relation-box {
+    margin: 4px 0; padding: 4px; background: #0f0f0f; border: 1px dashed #444;
+    font-size: 0.85rem; display: flex; justify-content: space-between; align-items: center;
+}
+.relation-label { color: #666; font-size: 0.8rem; }
+.relation-status { color: var(--text-highlight); font-weight: bold; letter-spacing: 1px; }
+.relation-status.neutral { color: #888; }
+
+.body-parts {
+    list-style: none; padding: 0; margin-top: auto;
+    font-size: 0.78rem; display: grid; grid-template-columns: 1fr 1fr; gap: 2px 10px;
+}
+.status.normal { color: var(--accent-green); }
+
+.console-log-container {
+    flex: 1; border: 1px solid var(--border-color); background: #000;
+    padding: 15px; overflow-y: auto; font-size: 1rem; line-height: 1.5;
+    margin-bottom: 0; border-bottom: none;
+}
+.log-entry { margin-bottom: 10px; white-space: pre-wrap; }
+.log-entry.event { color: #ddd; }
+.body-parts li .status.normal  { color: #d1d1d1; }
+.body-parts li .status.missing { color: #ff3b3b; text-shadow: 0 0 10px rgba(255,59,59,0.35); }
+.body-parts li .label { opacity: 0.85; }
+
+.control-panel {
+    border: 1px solid var(--border-color); border-top: 1px dashed #333;
+    background: #050505; padding: 0; flex-shrink: 0;
+}
+.choices {
+    padding: 10px; display: flex; justify-content: center; gap: 15px;
+    border-bottom: 1px solid var(--border-color);
+}
+.choice-btn {
+    background: #111; border: 1px solid #444; color: #999;
+    padding: 8px 20px; font-family: var(--font-ui); cursor: pointer;
+}
+.choice-btn:hover { border-color: var(--accent-green); color: var(--accent-green); }
+
+.terminal-footer { display: flex; align-items: center; padding: 8px 15px; background: #000; }
+.prompt { color: var(--accent-green); margin-right: 10px; font-weight: bold; }
+.cmd-input {
+    background: transparent; border: none; color: var(--text-highlight);
+    flex: 1; font-family: var(--font-code); font-size: 1.1rem; outline: none;
+}
+
+/* 슬라이더 커스텀 */
+input[type=range] {
+    -webkit-appearance: none; width: 100%; background: transparent; margin: 10px 0;
+}
+input[type=range]:focus { outline: none; }
+input[type=range]::-webkit-slider-runnable-track {
+    width: 100%; height: 8px; cursor: pointer; background: #111;
+    border: 1px solid #444; box-shadow: inset 1px 1px 2px #000;
+}
+input[type=range]::-webkit-slider-thumb {
+    height: 18px; width: 10px; border: 1px solid #000; background: var(--text-main);
+    cursor: pointer; -webkit-appearance: none; margin-top: -6px;
+    box-shadow: 1px 1px 0px var(--accent-green); transition: background 0.2s;
+}
+input[type=range]:hover::-webkit-slider-thumb { background: var(--accent-green); }
+/* 로그가 위로 스르륵 뜨는 느낌 */
+.log-entry{
+  opacity: 0;
+  transform: translateY(6px);
+  animation: logFadeIn 180ms ease-out forwards;
+}
+@keyframes logFadeIn{
+  to { opacity: 1; transform: translateY(0); }
+}
+.log-entry.burst{
+  animation-duration: 120ms;
+}
+
+@media (max-width: 900px) {
+    .cards-container { flex-direction: column; }
+    .game-status-panel { flex-direction: column; height: 50%; overflow-y: auto; }
+}
+@keyframes burstFlicker { 50% { opacity: 0.65; } }
+@keyframes blink { 50% { opacity: 0; } }
