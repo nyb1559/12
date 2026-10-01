@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Two-Fall Hospital</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="crt-overlay"></div>
+    <div class="screen-container">
+
+        <!-- 1️⃣ 시작 화면 -->
+        <section id="screen-start" class="screen active">
+            <div class="glitch-wrapper">
+                <h1 class="title-text glitch" data-text="환영합니다 여러분">환영합니다 여러분</h1>
+                <p class="subtitle-text typing-effect">기초 데이터 수집을 시작합니다...</p>
+            </div>
+            <div class="start-instruction">
+                <p class="blink-text">>> PRESS ENTER TO CONNECT <<</p>
+            </div>
+            <button onclick="switchScreen('screen-creation')" class="btn-invisible"></button>
+        </section>
+
+        <!-- 2️⃣ 캐릭터 생성 화면 -->
+        <section id="screen-creation" class="screen">
+            
+            <div class="header-log">
+                <span>SYSTEM_CHECK: OK</span>
+                <span>DATE: 199X-??-??</span>
+            </div>
+            <h2>[ 대상자 데이터 등록 ]</h2>
+            
+            <!-- 캐릭터 카드 영역 -->
+            <div class="cards-container">
+
+            <!-- SUBJECT A -->
+            <div class="char-setup-card">
+                <div class="card-header">SUBJECT_01</div>
+
+                <div class="setup-body">
+                <label class="img-upload-slot">
+                    <span class="placeholder-icon">+ UPLOAD IMG</span>
+                    <img class="img-preview" alt="" />
+                    <input type="file" class="hidden-file-input" accept="image/*">
+                </label>
+
+                <div class="input-area">
+                    <div class="input-group">
+                    <label>식별명</label> <input type="text" placeholder="Unknown">
+                    </div>
+                    <div class="input-group">
+                    <label>연령</label> <input type="number" placeholder="??">
+                    </div>
+                    <div class="input-group">
+                    <label>성별</label>
+                    <select><option>M</option><option>F</option></select>
+                    </div>
+                </div>
+                </div>
+
+                <div class="stat-alloc">
+                
+                <div class="stat-alloc"><p class="stat-title">현재 능력치 총합: <span class="stat-sum">15</span></p>
+                <div class="stat-row"><label>체력</label><input type="range" min="1" max="5" value="3"></div>
+                <div class="stat-row"><label>정신</label><input type="range" min="1" max="5" value="3"></div>
+                <div class="stat-row"><label>지식</label><input type="range" min="1" max="5" value="3"></div>
+                <div class="stat-row"><label>민첩</label><input type="range" min="1" max="5" value="3"></div>
+                <div class="stat-row"><label>근력</label><input type="range" min="1" max="5" value="3"></div>
+
+                <div class="stat-row stat-luck">
+                    <label>행운</label>
+                    <div class="luck-chip">RANDOM</div>
+                </div>
+                </div>
+            </div>
+        </div>
+            <!-- SUBJECT B -->
+            <div class="char-setup-card">
+                <div class="card-header">SUBJECT_02</div>
+
+                <div class="setup-body">
+                <label class="img-upload-slot">
+                    <span class="placeholder-icon">+ UPLOAD IMG</span>
+                    <img class="img-preview" alt="" />
+                    <input type="file" class="hidden-file-input" accept="image/*">
+                </label>
+
+                <div class="input-area">
+                    <div class="input-group">
+                    <label>식별명</label> <input type="text" placeholder="Unknown">
+                    </div>
+                    <div class="input-group">
+                    <label>연령</label> <input type="number" placeholder="??" min="0" max="1000" step="1">
+                    </div>
+                    <div class="input-group">
+                    <label>성별</label>
+                    <select><option>F</option><option>M</option></select>
+                    </div>
+                </div>
+                </div>
+
+                <div class="stat-alloc"><p class="stat-title">현재 능력치 총합: <span class="stat-sum">15</span></p>
+                <div class="stat-row"><label>체력</label><input type="range" min="1" max="5" value="3"></div>
+                <div class="stat-row"><label>정신</label><input type="range" min="1" max="5" value="3"></div>
+                <div class="stat-row"><label>지식</label><input type="range" min="1" max="5" value="3"></div>
+                <div class="stat-row"><label>민첩</label><input type="range" min="1" max="5" value="3"></div>
+                <div class="stat-row"><label>근력</label><input type="range" min="1" max="5" value="3"></div>
+
+                <div class="stat-row stat-luck">
+                    <label>행운</label>
+                    <div class="luck-chip">RANDOM</div>
+                </div>
+                </div>
+            </div>
+
+            </div>
+
+
+            <!-- ★ 관계 설정: 여기로 이동 (하단 배치) ★ -->
+            <div class="relation-pick">
+                <div class="relation-title">[ 관계 설정 ]</div>
+
+                <div class="relation-grid">
+                    <button type="button" class="rel-btn active" data-rel="NEUTRAL">중립</button>
+                    <button type="button" class="rel-btn" data-rel="FRIEND">친구</button>
+                    <button type="button" class="rel-btn" data-rel="LOVER">연인</button>
+                    <button type="button" class="rel-btn" data-rel="FAMILY">가족</button>
+                    <button type="button" class="rel-btn" data-rel="ENEMY">원수</button>
+                    <button type="button" class="rel-btn" data-rel="MASTER">사제</button>
+                </div>
+
+                <!-- 사제 선택 시만 보이게 -->
+                <div class="master-pick" id="master-pick">
+                    <div class="master-title">누가 스승입니까?</div>
+                    <div class="master-grid">
+                        <button type="button" class="master-btn active" data-master="0">SUBJECT_01</button>
+                        <button type="button" class="master-btn" data-master="1">SUBJECT_02</button>
+                    </div>
+                </div>
+
+                <p class="relation-desc" id="relation-desc">
+                    기본은 초면 관계입니다.
+                </p>
+            </div>
+
+            <div class="agreement-section">
+                <label>
+                    <input type="checkbox"> 
+                    <span class="fine-print">
+                    본 시뮬레이션은 15세 이상 이용가이며, 자살·죽음·상해·살해 등의 트리거 요소가 포함됩니다.
+                    </span>
+
+                </label>
+            </div>
+            
+            <button type="button" class="btn-submit">>> 절차 시작 (INITIATE)</button>
+
+        </section>
+
+        <!-- 3️⃣ 메인 게임 화면 -->
+        <section id="screen-game" class="screen">
+            <div class="floor-hud">
+                <div class="floor-left">
+                    <span class="floor-label">FLOOR:</span>
+                    <span id="floor-text" class="floor-value">1F</span>
+                    <span id="floor-sub" class="floor-sub">LOBBY</span>
+                </div>
+                <div class="floor-right">
+                    <span class="mode-label">MOVE:</span>
+                    <span id="move-mode" class="mode-value">WALK</span>
+                </div>
+            </div>
+            
+            <div class="game-status-panel">
+                <!-- 캐릭터 A -->
+                <div class="char-card" id="char-a">
+                    <div class="portrait-box">
+                        <div class="img-display-area">IMG_01</div>
+                        <div class="overlay-damage"></div>
+                    </div>
+                    <div class="char-info">
+                        <div class="name-tag">SUB_01: <span class="data">???</span></div>
+                        <div class="bar-group">
+                            <div class="label">BIO</div>
+                            <div class="hp-bar-wrap"><div class="hp-bar" style="width: 100%;"></div></div>
+                        </div>
+                        <div class="bar-group">
+                            <div class="label">MNT</div>
+                            <div class="san-bar-wrap"><div class="san-bar" style="width: 100%;"></div></div>
+                        </div>
+                        <div class="relation-box">
+                            <span class="relation-label">TO SUB_02:</span>
+                            <span class="relation-status neutral">NEUTRAL</span> 
+                        </div>
+                        <ul class="body-parts">
+                            <li data-part="head">HEAD <span class="status normal">■</span></li>
+                            <li data-part="brain">BRAIN <span class="status normal">■</span></li>
+                            
+                            <li data-part="heart">HEART <span class="status normal">■</span></li>
+                            <li data-part="arm_l">L-ARM <span class="status normal">■</span></li>
+                            <li data-part="arm_r">R-ARM <span class="status normal">■</span></li>
+                            <li data-part="leg_l">L-LEG <span class="status normal">■</span></li>
+                            <li data-part="leg_r">R-LEG <span class="status normal">■</span></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 캐릭터 B -->
+                <div class="char-card" id="char-b">
+                    <div class="portrait-box">
+                        <div class="img-display-area">IMG_02</div>
+                        <div class="overlay-damage"></div>
+                    </div>
+                    <div class="char-info">
+                        <div class="name-tag">SUB_02: <span class="data">???</span></div>
+                        <div class="bar-group">
+                            <div class="label">BIO</div>
+                            <div class="hp-bar-wrap"><div class="hp-bar" style="width: 100%;"></div></div>
+                        </div>
+                        <div class="bar-group">
+                            <div class="label">MNT</div>
+                            <div class="san-bar-wrap"><div class="san-bar" style="width: 100%;"></div></div>
+                        </div>
+                        <div class="relation-box">
+                            <span class="relation-label">TO SUB_01:</span>
+                            <span class="relation-status neutral">NEUTRAL</span>
+                        </div>
+                        <ul class="body-parts">
+                            <li data-part="head">HEAD <span class="status normal">■</span></li>
+                            <li data-part="brain">BRAIN <span class="status normal">■</span></li>
+                            <li data-part="heart">HEART <span class="status normal">■</span></li>
+                            <li data-part="arm_l">L-ARM <span class="status normal">■</span></li>
+                            <li data-part="arm_r">R-ARM <span class="status normal">■</span></li>
+                            <li data-part="leg_l">L-LEG <span class="status normal">■</span></li>
+                            <li data-part="leg_r">R-LEG <span class="status normal">■</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 로그 창 -->
+            <div class="console-log-container">
+                <div class="log-entry system">
+                    > SYSTEM BOOT SEQUENCE COMPLETE.<br>
+                    > 시설 안내: 본 건물은 7층 구조입니다.<br>
+                    > 주의: 지하 구역 접근 시 보안 등급 확인이 필요합니다.
+                </div>
+                <div class="log-entry event">
+                    > 로비에 도착했습니다. 공기가 차갑습니다.
+                </div>
+            </div>
+
+            <!-- 컨트롤 패널 -->
+            <div class="control-panel mode-choices">
+                <div class="choices">
+                    <button class="choice-btn">엘리베이터 확인</button>
+                    <button class="choice-btn">계단 확인</button>
+                </div>
+                <div class="terminal-footer">
+                    <span class="prompt">ROOT@HOSPITAL:~$</span>
+                    <input type="text" class="cmd-input" placeholder="_" autocomplete="off">
+                </div>
+            </div>
+        </section>
+
+    </div>
+    <script src="script.js"></script>
+    <script>
+        function switchScreen(id) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+        }
+    </script>
+</body>
+</html>
